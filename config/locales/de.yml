@@ -17,6 +17,9 @@ de:
     admin:
       area: Administrations Bereich
       welcome: "Willkommen im Foren Admin-Bereich."
+      configuration:
+        index: Forem options
+        post_approval: First post approval mandatory
       forum:
         index: Foren verwalten
         new: Neues Forum erstellen

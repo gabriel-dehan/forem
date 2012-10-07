@@ -17,6 +17,9 @@ es:
     admin:
       area: Admin Area
       welcome: "Bienvenido al área de administrador de forem."
+      configuration:
+        index: Forem options
+        post_approval: First post approval mandatory
       forum:
         index: Organizar Forums
         new: Crear un nuevo forum
@@ -189,4 +192,3 @@ es:
   by: por
   started_by: "Iniciado por "
   are_you_sure: ¿Esta seguro?
-
