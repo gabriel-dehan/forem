@@ -8,7 +8,7 @@ module Forem
       def update
         if Forem::Configuration.first.update_attributes(params[:configuration])
           flash[:notice] = t("forem.admin.configuration.updated")
-          redirect_to admin_configuration_index_path
+          redirect_to forem.admin_configuration_index_path
         else
           flash.now.alert = t("forem.admin.configuration.not_updated")
           render :action => "index"
