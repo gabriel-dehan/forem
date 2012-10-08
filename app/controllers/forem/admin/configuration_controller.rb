@@ -2,9 +2,7 @@ module Forem
   module Admin
     class ConfigurationController < ApplicationController
       def index
-        p 'IN INDEX'
-        @conf = Forem::Configuration.first
-        p @conf
+        @configuration = Forem::Configuration.first
       end
 
       def update
