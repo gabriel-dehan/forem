@@ -1,5 +1,5 @@
 module Forem
-  class Admin::ConfigurationController < BaseController
+  class Admin::ConfigurationController < ApplicationController
     def index
       @configuration = Forem::Configuration.first
     end
