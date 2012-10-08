@@ -15,8 +15,10 @@ module Forem
     end
 
     def create
+      p 'heeere'
       authorize! :reply, @topic
       if @topic.locked?
+        p 'locked'
         flash.alert = t("forem.post.not_created_topic_locked")
         redirect_to [@topic.forum, @topic] and return
       end
