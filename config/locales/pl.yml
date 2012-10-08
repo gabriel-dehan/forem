@@ -3,6 +3,9 @@ pl:
     admin:
       area: Panel administracyjny
       welcome: Witaj w panelu administracyjnym Forem.
+      configuration:
+        index: Forem options
+        post_approval: First post approval mandatory
       forum:
         index: Zarządzanie forami
         new: Dodaj forum

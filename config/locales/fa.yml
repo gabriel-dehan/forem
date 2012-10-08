@@ -4,6 +4,9 @@ fa:
     admin:
       area: بخش مدیریت
       welcome: "به بخش مدیریت خوش آمدید."
+      configuration:
+        index: Forem options
+        post_approval: First post approval mandatory
       forum:
         index: مدیریت انجمن ها
         new: ایجاد انجمن جدید

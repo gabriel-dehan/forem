@@ -17,6 +17,9 @@ nl:
     admin:
       area: Beheerders gedeelte
       welcome: "Welkom bij forem's beheerders gedeelte."
+      configuration:
+        index: Forem options
+        post_approval: First post approval mandatory
       forum:
         index: Beheer Forums
         new: Maak een nieuw forum
@@ -189,4 +192,3 @@ nl:
   by: door
   started_by: "Gestart door "
   are_you_sure: Weet je het zeker?
-

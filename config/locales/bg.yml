@@ -17,6 +17,9 @@ bg:
     admin:
       area: Администравен Панел
       welcome: "Добре дошли в административния панел на Форем"
+      configuration:
+        index: Forem options
+        post_approval: First post approval mandatory
       forum:
         index: Управление на форуми
         new: Създаване на нов форум
@@ -189,4 +192,3 @@ bg:
   by: от
   started_by: "Стартирана от "
   are_you_sure: Сигурен ли сте?
-

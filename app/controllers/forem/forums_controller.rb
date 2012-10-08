@@ -4,6 +4,7 @@ module Forem
     helper 'forem/topics'
 
     def index
+      Forem::Configuration.create(post_approval: true) if Forem::Configuration.all.empty?
       @categories = Forem::Category.all
     end
 

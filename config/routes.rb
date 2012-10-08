@@ -41,6 +41,8 @@ Forem::Engine.routes.draw do
       end
     end
 
+    resources :configuration, :only => [:index, :update]
+
     get 'users/autocomplete', :to => "users#autocomplete"
   end
 end

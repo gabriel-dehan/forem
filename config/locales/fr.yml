@@ -16,6 +16,11 @@ fr:
     access_denied: "Vous n'êtes pas autorisé à faire cela."
     admin:
       area: Section d'administration
+      configuration:
+        index: Options de Forem
+        post_approval: Approbation des premiers posts obligatoire
+        updated: Options mises à jour
+        not_updated: Les options n'ont pas pu être mises à jour
       welcome: "Bienvenue dans la section d'administration de forem."
       forum:
         index: Gérer les forums
@@ -189,4 +194,3 @@ fr:
   by: par
   started_by: "Commencé par "
   are_you_sure: Êtes-vous certain ?
-

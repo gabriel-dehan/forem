@@ -21,6 +21,8 @@ module Forem
         redirect_to [@topic.forum, @topic] and return
       end
       @post = @topic.posts.build(params[:post])
+      @post.approve_user if Forem::Configuration.first.post_approval == true && @post.user.forem_state != 'approved'
+
       @post.user = forem_user
       if @post.save
         flash[:notice] = t("forem.post.created")

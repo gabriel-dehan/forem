@@ -17,6 +17,11 @@ en:
     admin:
       area: Admin Area
       welcome: "Welcome to forem's Admin Area."
+      configuration:
+        index: Forem options
+        post_approval: First post approval mandatory
+        updated: Options updated
+        not_updated: Options could not be updated
       forum:
         index: Manage Forums
         new: Creating a new forum
