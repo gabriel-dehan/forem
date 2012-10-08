@@ -21,12 +21,14 @@ module Forem
         redirect_to [@topic.forum, @topic] and return
       end
       @post = @topic.posts.build(params[:post])
-
       @post.user = forem_user
+
       if @post.save
+        p 'worked'
         flash[:notice] = t("forem.post.created")
         redirect_to forum_topic_url(@topic.forum, @topic, :page => last_page)
       else
+        p 'Here'
         params[:reply_to_id] = params[:post][:reply_to_id]
         flash.now.alert = t("forem.post.not_created")
         render :action => "new"
