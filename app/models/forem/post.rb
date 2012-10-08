@@ -118,7 +118,7 @@ module Forem
     end
 
     def skip_pending_review_if_user_approved
-      self.update_attribute(:state, 'approved') if (user && user.forem_state == 'approved') || Forem::Configuration.first.post_approval == true
+      self.update_attribute(:state, 'approved') if (user && user.forem_state == 'approved') || Forem::Configuration.first.post_approval == false
     end
 
     def approve_user
