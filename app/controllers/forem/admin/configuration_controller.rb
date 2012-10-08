@@ -6,7 +6,6 @@ module Forem
       end
 
       def update
-        @configuration ||= Forem::Configuration.first
         if @configuration.update_attributes(params[:configuration])
           flash[:notice] = t("forem.admin.configuration.updated")
           redirect_to admin_configuration_path
