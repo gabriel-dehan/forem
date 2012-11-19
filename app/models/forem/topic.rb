@@ -12,7 +12,9 @@ module Forem
         event :approve, :transitions_to => :approved
       end
       state :spam
-      state :approved
+      state :approved do
+        event :approve, :transitions_to => :approved
+      end
     end
 
     attr_accessor :moderation_option
@@ -21,6 +23,7 @@ module Forem
     friendly_id :subject, :use => :slugged
 
     attr_accessible :subject, :posts_attributes
+    attr_accessible :subject, :posts_attributes, :pinned, :locked, :hidden, :forum_id, :as => :admin
 
     belongs_to :forum
     belongs_to :user, :class_name => Forem.user_class.to_s
@@ -34,7 +37,7 @@ module Forem
     before_save  :set_first_post_user
     after_save   :approve_user_and_posts, :if => :approved?
     after_create :subscribe_poster
-    after_create :skip_pending_review_if_user_approved
+    after_create :skip_pending_review
 
     class << self
       def visible
@@ -107,9 +110,8 @@ module Forem
       !locked?
     end
 
-
     def subscribe_poster
-      subscribe_user(self.user_id)
+      subscribe_user(user_id)
     end
 
     def subscribe_user(user_id)
@@ -126,26 +128,32 @@ module Forem
       subscriptions.exists?(:subscriber_id => user_id)
     end
 
-    def subscription_for user_id
-      subscriptions.first(:conditions => { :subscriber_id=>user_id })
+    def subscription_for(user_id)
+      subscriptions.where(:subscriber_id => user_id).first
+    end
+
+    def last_page
+      (self.posts.count.to_f / Forem.per_page.to_f).ceil
     end
 
     protected
     def set_first_post_user
-      post = self.posts.first
-      post.user = self.user
+      post = posts.first
+      post.user = user
     end
 
-    def skip_pending_review_if_user_approved
-      self.update_attribute(:state, 'approved') if user && user.forem_state == 'approved'
+    def skip_pending_review
+      if user.try(:forem_needs_moderation?)
+        update_attribute(:state, 'approved')
+      end
     end
 
     def approve_user_and_posts
       return unless state_changed?
 
-      first_post = self.posts.by_created_at.first
+      first_post = posts.by_created_at.first
       first_post.approve! unless first_post.approved?
-      self.user.update_attribute(:forem_state, 'approved') if self.user.forem_state != 'approved'
+      user.update_attribute(:forem_state, 'approved') if user.forem_state != 'approved'
     end
   end
 end

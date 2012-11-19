@@ -4,7 +4,7 @@ module Forem
       before_filter :find_forum, :only => [:edit, :update, :destroy]
 
       def index
-        @forums = Forum.all
+        @forums = Forem::Forum.all
       end
 
       def new
@@ -20,10 +20,6 @@ module Forem
           flash.now.alert = t("forem.admin.forum.not_created")
           render :action => "new"
         end
-      end
-
-      def edit
-
       end
 
       def update

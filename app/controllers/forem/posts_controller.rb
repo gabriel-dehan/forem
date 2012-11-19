@@ -26,7 +26,7 @@ module Forem
       @post.user = forem_user
       if @post.save
         flash[:notice] = t("forem.post.created")
-        redirect_to forum_topic_url(@topic.forum, @topic, :page => last_page)
+        redirect_to forum_topic_url(@topic.forum, @topic, :page => @topic.last_page)
       else
         params[:reply_to_id] = params[:post][:reply_to_id]
         flash.now.alert = t("forem.post.not_created")
@@ -36,12 +36,12 @@ module Forem
 
     def edit
       authorize! :edit_post, @topic.forum
-      @post = Post.find(params[:id])
+      @post = Forem::Post.find(params[:id])
     end
 
     def update
       authorize! :edit_post, @topic.forum
-      @post = Post.find(params[:id])
+      @post = Forem::Post.find(params[:id])
       if @post.owner_or_admin?(forem_user) and @post.update_attributes(params[:post])
         redirect_to [@topic.forum, @topic], :notice => t('edited', :scope => 'forem.post')
       else
@@ -80,10 +80,6 @@ module Forem
         flash[:alert] = t('forem.general.flagged_for_spam') + ' ' + t('forem.general.cannot_create_post')
         redirect_to :back
       end
-    end
-
-    def last_page
-      (@topic.posts.count.to_f / Forem.per_page.to_f).ceil
     end
   end
 end

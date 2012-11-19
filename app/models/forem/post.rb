@@ -9,7 +9,9 @@ module Forem
         event :approve, :transitions_to => :approved
       end
       state :spam
-      state :approved
+      state :approved do
+        event :approve, :transitions_to => :approved
+      end
     end
 
     # Used in the moderation tools partial
@@ -31,7 +33,7 @@ module Forem
 
     after_create :set_topic_last_post_at
     after_create :subscribe_replier, :if => :user_auto_subscribe?
-    after_create :skip_pending_review_if_user_approved
+    after_create :skip_pending_review
 
     after_save :approve_user,   :if => :approved?
     after_save :blacklist_user, :if => :spam?
@@ -39,10 +41,7 @@ module Forem
 
     class << self
       def approved
-        includes(:topic).
-        select("#{quoted_table_name}.*").
-        select(Topic.arel_table[:state].eq('approved'))
-        where("forem_posts.state = ?", "approved")
+        where(:state => "approved")
       end
 
       def approved_or_pending_review_for(user)
@@ -68,11 +67,11 @@ module Forem
       end
 
       def visible
-        joins(:topic).where Topic.arel_table[:hidden].eq(false)
+        joins(:topic).where(:forem_topics => { :hidden => false })
       end
 
       def topic_not_pending_review
-        joins(:topic).where Topic.arel_table[:state].eq('approved')
+        joins(:topic).where(:forem_topics => { :state => 'approved'})
       end
 
       def moderate!(posts)
@@ -89,36 +88,34 @@ module Forem
     end
 
     def owner_or_admin?(other_user)
-      self.user == other_user || other_user.forem_admin?
-    end
-
-    def approved?
-      state == 'approved'
+      user == other_user || other_user.forem_admin?
     end
 
     protected
 
     def subscribe_replier
-      if self.topic && self.user
-        self.topic.subscribe_user(self.user.id)
+      if topic && user
+        topic.subscribe_user(user.id)
       end
     end
 
     def email_topic_subscribers
       topic.subscriptions.includes(:subscriber).find_each do |subscription|
         if subscription.subscriber != user
-          subscription.send_notification(self.id)
+          subscription.send_notification(id)
         end
       end
-      self.update_attribute(:notified, true)
+      update_attribute(:notified, true)
     end
 
     def set_topic_last_post_at
-      self.topic.update_attribute(:last_post_at, self.created_at)
+      topic.update_attribute(:last_post_at, created_at)
     end
 
-    def skip_pending_review_if_user_approved
-      self.update_attribute(:state, 'approved') if user && user.forem_state == 'approved'
+    def skip_pending_review
+      if user.try(:forem_needs_moderation?)
+        update_attribute(:state, 'approved')
+      end
     end
 
     def approve_user

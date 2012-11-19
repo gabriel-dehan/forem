@@ -6,7 +6,7 @@
   <h3>Private for</h3>
   <%= f.association :allowed_viewers, :as => :check_boxes %>
 
-  <h3>Moderator Groups</h3>
+  <h3><%= t('forem.moderator_groups') %></h3>
   <%= f.association :moderators, :as => :check_boxes %>
   <%= f.submit %>
 <% end %>
